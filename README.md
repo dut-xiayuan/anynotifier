@@ -1,1 +1,3 @@
 # btcnotifier
+
+btc prices notification
