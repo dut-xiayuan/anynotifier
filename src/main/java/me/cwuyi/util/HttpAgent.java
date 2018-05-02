@@ -10,21 +10,29 @@ import java.io.IOException;
 
 public class HttpAgent {
 
+    private static CloseableHttpClient httpClient;
+
+    static {
+        httpClient = HttpClients.createDefault();
+    }
+
     public static String getResult(String url) {
         HttpGet get = new HttpGet(url);
-        CloseableHttpClient httpClient = null;
         CloseableHttpResponse response = null;
         String ret = "";
         try {
-            httpClient = HttpClients.createDefault();
             response = httpClient.execute(get);
             ret = EntityUtils.toString(response.getEntity());
         } catch (Exception e) {
+            try {
+                httpClient.close();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
             e.printStackTrace();
         } finally {
             try {
                 response.close();
-                httpClient.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
