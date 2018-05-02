@@ -13,7 +13,7 @@ import java.time.format.DateTimeFormatter;
 
 public class App {
 
-    private static long MIN_SEND_INTERVAL = 30000L;
+    private static long MIN_SEND_INTERVAL = 30000l;
 
     public static void main(String[] args) throws Exception {
 
