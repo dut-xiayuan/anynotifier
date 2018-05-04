@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import me.cwuyi.notifier.Notifier;
 import me.cwuyi.notifier.SMSNotifier;
+import me.cwuyi.notifier.SlackNotifier;
 import me.cwuyi.watcher.BTCWatcher;
 import me.cwuyi.watcher.Watcher;
 
@@ -17,7 +18,8 @@ public class App {
 
     public static void main(String[] args) throws Exception {
 
-        Notifier smsNotifier = new SMSNotifier();
+//        Notifier notifier = new SMSNotifier();
+        Notifier notifier = new SlackNotifier();
         Watcher btcWatcher = new BTCWatcher();
 
         BigDecimal priceHighBar = new BigDecimal(9000);
@@ -35,7 +37,7 @@ public class App {
             if (priceHighBar.compareTo(nowPrice) < 0) {
                 LocalDateTime now = LocalDateTime.now();
                 String param = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + "，现在价格：" + nowPrice.toString() + " USD";
-                smsNotifier.send(new String[]{priceHighBar.toString(), (priceHighBar = priceHighBar.add(new BigDecimal(100))).toString(), param});
+                notifier.send(new String[]{priceHighBar.toString(), (priceHighBar = priceHighBar.add(new BigDecimal(100))).toString(), param});
             }
 
             Thread.sleep(MIN_SEND_INTERVAL);
