@@ -1,6 +1,5 @@
 package me.cwuyi.Monitor;
 
-import me.cwuyi.notifier.Notifier;
 import me.cwuyi.notifier.SlackNotifier;
 import me.cwuyi.watcher.CasewebWatcher;
 import me.cwuyi.watcher.Watcher;
@@ -18,6 +17,7 @@ public class CasewebMonitor implements Runnable {
         while (true) {
             if ((boolean)watcher.getEvent()) {
                 try {
+                    System.out.println("caseweb is alive");
                     Thread.sleep(MIN_SEND_INTERVAL);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
