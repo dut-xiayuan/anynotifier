@@ -34,4 +34,14 @@ public class SlackNotifier implements Notifier{
             e.printStackTrace();
         }
     }
+
+    public void send(String message) {
+        SlackWebHookMess webHookMess = new SlackWebHookMess(message);
+
+        try {
+            HttpAgent.postData(slack_webhook_url, JSON.toJSONString(webHookMess));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
