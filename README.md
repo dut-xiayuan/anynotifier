@@ -1,3 +1,4 @@
-# btcnotifier
+# anynotifier
 
-btc prices notification
+* when btc price lower than priceHigh bar, notify
+* when my concerned web down, notify
