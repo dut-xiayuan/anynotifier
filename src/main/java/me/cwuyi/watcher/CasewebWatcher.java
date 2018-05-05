@@ -12,7 +12,7 @@ public class CasewebWatcher implements Watcher {
 
     private static String casewebUrl;
     private static int casewebPort;
-    private static final int SOCKET_TIMEOUT = 5000;
+    private static int SOCKET_TIMEOUT;
 
     static {
         try {
@@ -20,6 +20,7 @@ public class CasewebWatcher implements Watcher {
             properties.load(CasewebWatcher.class.getResourceAsStream("/watcher.properties"));
             casewebUrl = properties.getProperty(CasewebProperties.CASEWEB_URL_PRO);
             casewebPort = Integer.parseInt(properties.getProperty(CasewebProperties.CASEWEB_PORT_PRO));
+            SOCKET_TIMEOUT = Integer.parseInt(properties.getProperty(CasewebProperties.CASEWEB_SOCKET_TIMEOUT));
         } catch (Exception e) {
             e.printStackTrace();
         }

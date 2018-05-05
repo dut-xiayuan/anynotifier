@@ -2,18 +2,32 @@ package me.cwuyi.Monitor;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import me.cwuyi.constant.BTCPriceProperties;
+import me.cwuyi.constant.CasewebProperties;
 import me.cwuyi.notifier.Notifier;
 import me.cwuyi.notifier.SlackNotifier;
 import me.cwuyi.watcher.BTCWatcher;
+import me.cwuyi.watcher.CasewebWatcher;
 import me.cwuyi.watcher.Watcher;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Properties;
 
 public class BTCMonitor implements Runnable{
 
-    private static long MIN_SEND_INTERVAL = 5000l;
+    private static long MIN_SEND_INTERVAL;
+
+    static {
+        try {
+            Properties properties = new Properties();
+            properties.load(CasewebWatcher.class.getResourceAsStream("/watcher.properties"));
+            MIN_SEND_INTERVAL = Long.parseLong(properties.getProperty(BTCPriceProperties.BTC_ISALIVE_SLEEPTIME));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public void run() {
