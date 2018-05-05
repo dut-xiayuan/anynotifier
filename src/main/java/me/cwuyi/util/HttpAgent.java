@@ -53,8 +53,8 @@ public class HttpAgent {
         entity.setContentEncoding("UTF-8");
         entity.setContentType("application/json");
         post.setEntity(entity);
-
-        httpClient.execute(post);
+        CloseableHttpResponse response = httpClient.execute(post);
+        response.close();
     }
 
 
