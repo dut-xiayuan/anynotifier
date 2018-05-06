@@ -18,12 +18,14 @@ import java.util.Properties;
 public class BTCMonitor implements Runnable{
 
     private static long MIN_SEND_INTERVAL;
+    private static String PIRCE_HIGH_BAR_INIT;
 
     static {
         try {
             Properties properties = new Properties();
             properties.load(CasewebWatcher.class.getResourceAsStream("/watcher.properties"));
             MIN_SEND_INTERVAL = Long.parseLong(properties.getProperty(BTCPriceProperties.BTC_ISALIVE_SLEEPTIME));
+            PIRCE_HIGH_BAR_INIT = properties.getProperty(BTCPriceProperties.BTC_MONITOR_PRICE_INIT_PRO);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -34,7 +36,7 @@ public class BTCMonitor implements Runnable{
         Notifier notifier = new SlackNotifier();
         Watcher btcWatcher = new BTCWatcher();
 
-        BigDecimal priceHighBar = new BigDecimal(9000);
+        BigDecimal priceHighBar = new BigDecimal(PIRCE_HIGH_BAR_INIT);
 
         while (true) {
             String btcJson = btcWatcher.getEvent().toString();

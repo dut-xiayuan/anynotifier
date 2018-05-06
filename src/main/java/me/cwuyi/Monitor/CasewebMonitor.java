@@ -9,7 +9,8 @@ import java.util.Properties;
 
 public class CasewebMonitor implements Runnable {
 
-    private static final String MESSAGE = "Caseweb超时";
+    private static final String TIMEOUT_MESSAGE = "Caseweb超时";
+    private static final String RECOVERY_MESSAGE = "Caseweb正常";
     private static long MIN_SEND_INTERVAL;
 
     static {
@@ -27,17 +28,32 @@ public class CasewebMonitor implements Runnable {
         SlackNotifier notifier = new SlackNotifier();
         Watcher watcher = new CasewebWatcher();
 
+        boolean hasSendFailMess = false;
+        boolean hasSendRecoverMess = false;
+
         while (true) {
+
             if (new Boolean(watcher.getEvent().toString())) {
-                try {
-                    System.out.println("caseweb is alive");
-                    Thread.sleep(MIN_SEND_INTERVAL);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                System.out.println("caseweb is alive");
+                if (!hasSendRecoverMess) {
+                    notifier.send(RECOVERY_MESSAGE);
+                    hasSendRecoverMess = true;
+                    hasSendFailMess = false;
                 }
             } else {
-                notifier.send(MESSAGE);
+                if (!hasSendFailMess) {
+                    notifier.send(TIMEOUT_MESSAGE);
+                    hasSendFailMess = true;
+                    hasSendRecoverMess = false;
+                }
             }
+
+            try {
+                Thread.sleep(MIN_SEND_INTERVAL);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
         }
     }
 }
